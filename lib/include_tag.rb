@@ -1,12 +1,13 @@
 module IncludeTag
 
   include Radiant::Taggable
-  include Haml::Helpers
 
   desc "somewhat new tag"
   tag "include" do |tag|
     #RAILS_ROOT + '/app/views/layouts/application.html.haml'
-    haml_concat RAILS_ROOT + '/app/views/layouts/' + tag.attr['file']
+    layout = File.new(RAILS_ROOT + '/app/views/layouts/' + tag.attr['file'])
+    engine = Haml::Engine.new(layout.read)
+    engine.render
   end
 
 end
