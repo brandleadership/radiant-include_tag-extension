@@ -4,10 +4,11 @@ module IncludeTag
 
   desc "somewhat new tag"
   tag "include" do |tag|
-    #RAILS_ROOT + '/app/views/layouts/application.html.haml'
+    context = PageContext.new(self)
     layout = File.new(RAILS_ROOT + '/app/views/layouts/' + tag.attr['file'])
     engine = Haml::Engine.new(layout.read)
-    engine.render
+    parser = Radius::Parser.new(context, :tag_prefix => 'r')
+    parser.parse(engine.render)
   end
 
 end
